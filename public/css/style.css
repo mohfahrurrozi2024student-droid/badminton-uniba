@@ -464,6 +464,36 @@ textarea::placeholder {
   font-weight: 500;
 }
 
+.username-input-wrapper {
+  margin-top: 14px;
+}
+
+.username-input-wrapper label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.username-input-wrapper input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s;
+  background: var(--cream-light);
+}
+
+.username-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--primary-lighter);
+  box-shadow: 0 0 0 4px rgba(67,160,71,0.1);
+  background: var(--white);
+}
+
 .submit-btn {
   width: 100%;
   padding: 16px 32px;
