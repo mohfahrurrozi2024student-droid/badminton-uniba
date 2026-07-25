@@ -12,8 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'badminton-uniba-secret-key-2025';
 
-const UPLOAD_DIR = process.env.RENDER_DISK_PATH
-  ? path.join(process.env.RENDER_DISK_PATH, 'uploads')
+const UPLOAD_DIR = process.env.DATA_PATH
+  ? path.join(process.env.DATA_PATH, 'uploads')
   : path.join(__dirname, 'public', 'uploads');
 
 const storage = multer.diskStorage({
@@ -60,7 +60,7 @@ app.post('/api/register', upload.fields([
   { name: 'file_instagram', maxCount: 1 }
 ]), (req, res) => {
   try {
-    const { nama, jurusan, angkatan, no_hp, alasan } = req.body;
+    const { nama, email, jurusan, angkatan, no_hp, alasan } = req.body;
     const db = getDatabase();
 
     const file_siakad = req.files['file_siakad'] ? '/uploads/' + req.files['file_siakad'][0].filename : null;
@@ -68,9 +68,9 @@ app.post('/api/register', upload.fields([
     const file_instagram = req.files['file_instagram'] ? '/uploads/' + req.files['file_instagram'][0].filename : null;
 
     db.run(
-      `INSERT INTO registrations (nama, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nama, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram]
+      `INSERT INTO registrations (nama, email, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nama, email, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram]
     );
 
     saveDatabase();
@@ -120,7 +120,7 @@ app.get('/api/admin/data', authenticateToken, (req, res) => {
   const db = getDatabase();
   const result = db.exec("SELECT * FROM registrations ORDER BY created_at DESC");
 
-  const columns = ['id', 'nama', 'jurusan', 'angkatan', 'no_hp', 'alasan', 'file_siakad', 'file_tiktok', 'file_instagram', 'created_at'];
+  const columns = ['id', 'nama', 'email', 'jurusan', 'angkatan', 'no_hp', 'alasan', 'file_siakad', 'file_tiktok', 'file_instagram', 'created_at'];
   const data = result.length > 0 ? result[0].values.map(row => {
     const obj = {};
     columns.forEach((col, i) => { obj[col] = row[i]; });
@@ -134,7 +134,7 @@ app.get('/api/admin/data/csv', authenticateToken, (req, res) => {
   const db = getDatabase();
   const result = db.exec("SELECT * FROM registrations ORDER BY created_at DESC");
 
-  const headers = ['ID', 'Nama', 'Jurusan', 'Angkatan', 'No. HP', 'Alasan Bergabung', 'File Siakad', 'File TikTok', 'File Instagram', 'Tanggal Daftar'];
+  const headers = ['ID', 'Nama', 'Email', 'Jurusan', 'Angkatan', 'No. HP', 'Alasan Bergabung', 'File Siakad', 'File TikTok', 'File Instagram', 'Tanggal Daftar'];
   let csv = headers.join(',') + '\n';
 
   if (result.length > 0) {

@@ -107,7 +107,7 @@ async function loadData() {
     if (data.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="11" class="empty-state">
+          <td colspan="12" class="empty-state">
             <i class="fas fa-inbox"></i>
             <p>Belum ada data pendaftar</p>
           </td>
@@ -129,6 +129,7 @@ async function loadData() {
         <tr>
           <td>${index + 1}</td>
           <td><strong>${escapeHtml(row.nama)}</strong></td>
+          <td>${escapeHtml(row.email)}</td>
           <td>${escapeHtml(row.jurusan)}</td>
           <td>${escapeHtml(row.angkatan)}</td>
           <td>${escapeHtml(row.no_hp)}</td>

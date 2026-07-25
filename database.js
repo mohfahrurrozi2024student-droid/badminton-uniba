@@ -2,8 +2,8 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = process.env.RENDER_DISK_PATH
-  ? path.join(process.env.RENDER_DISK_PATH, 'data.db')
+const DB_PATH = process.env.DATA_PATH
+  ? path.join(process.env.DATA_PATH, 'data.db')
   : path.join(__dirname, 'data.db');
 
 let db = null;
@@ -23,6 +23,7 @@ async function initDatabase() {
     CREATE TABLE IF NOT EXISTS registrations (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nama TEXT NOT NULL,
+      email TEXT NOT NULL DEFAULT '',
       jurusan TEXT NOT NULL,
       angkatan TEXT NOT NULL,
       no_hp TEXT NOT NULL,
