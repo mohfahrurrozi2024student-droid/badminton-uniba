@@ -243,7 +243,11 @@ document.getElementById('sendOtpBtn').addEventListener('click', async function()
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
   try {
-    const res = await fetch(API.sendOtp, { method: 'POST' });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
+    const res = await fetch(API.sendOtp, { method: 'POST', signal: controller.signal });
+    clearTimeout(timeout);
     const result = await res.json();
 
     if (result.success) {
@@ -253,10 +257,11 @@ document.getElementById('sendOtpBtn').addEventListener('click', async function()
       document.getElementById('changePasswordBtn').style.display = 'inline-flex';
     } else {
       showToast(result.error, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim OTP';
     }
   } catch (e) {
-    showToast('Gagal kirim OTP', 'error');
-  } finally {
+    showToast('Gagal kirim OTP. Cek koneksi dan pengaturan email.', 'error');
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim OTP';
   }

@@ -538,8 +538,25 @@ tbody tr:last-child td {
 .settings-info {
   font-size: 13px;
   color: var(--text-light);
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   line-height: 1.5;
+}
+
+.settings-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF3E0;
+  border: 1px solid #FFE0B2;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #E65100;
+}
+
+.settings-warning i {
+  font-size: 16px;
 }
 
 .settings-card .form-group input {
