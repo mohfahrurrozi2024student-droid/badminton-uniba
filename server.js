@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const { initDatabase, saveDatabase, getDatabase } = require('./database');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'badminton-uniba-secret-key-2025';
 
 const UPLOAD_DIR = process.env.RENDER_DISK_PATH
