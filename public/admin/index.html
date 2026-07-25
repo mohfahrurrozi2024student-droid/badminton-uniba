@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - UKM Badminton UNIBA MADURA</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="login-logo">
+        <i class="fas fa-shuttlecock"></i>
+      </div>
+      <h2>Admin Panel</h2>
+      <p class="login-subtitle">UKM Badminton UNIBA MADURA</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" placeholder="Masukkan username" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Masukkan password" required>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Masuk
+        </button>
+        <p class="login-error" id="loginError"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboardPage" class="dashboard-page" style="display:none;">
+    <nav class="navbar">
+      <div class="nav-brand">
+        <i class="fas fa-shuttlecock"></i>
+        <span>Admin Panel</span>
+      </div>
+      <div class="nav-actions">
+        <span id="adminName" class="admin-name"><i class="fas fa-user-shield"></i> admin</span>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <div>
+          <h1><i class="fas fa-users"></i> Data Pendaftar</h1>
+          <p class="dashboard-subtitle">Kelola data calon anggota UKM Badminton UNIBA MADURA</p>
+        </div>
+        <div class="dashboard-actions">
+          <div class="stat-card">
+            <span class="stat-number" id="totalCount">0</span>
+            <span class="stat-label">Total Pendaftar</span>
+          </div>
+          <button id="downloadCsvBtn" class="action-btn csv-btn">
+            <i class="fas fa-file-csv"></i> Download CSV
+          </button>
+          <button id="refreshBtn" class="action-btn refresh-btn">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama</th>
+              <th>Jurusan</th>
+              <th>Angkatan</th>
+              <th>No. HP</th>
+              <th>Alasan</th>
+              <th>File Siakad</th>
+              <th>File TikTok</th>
+              <th>File IG</th>
+              <th>Tgl Daftar</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dataBody">
+            <tr>
+              <td colspan="11" class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>Belum ada data pendaftar</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

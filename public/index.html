@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Recruitment UKM Badminton UNIBA MADURA</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div class="header-decoration"></div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <img src="/logo.png" alt="Logo UKM Badminton" class="logo-img">
+        </div>
+        <div class="logo-text">
+          <h1>UKM Badminton</h1>
+          <p>UNIBA MADURA</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-open">OPEN</span>
+        <span class="badge-recruitment">RECRUITMENT</span>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header">
+        <h2><i class="fas fa-file-alt"></i> Formulir Pendaftaran Anggota Baru</h2>
+        <p>Formulir ini adalah gerbang awal bagi mahasiswa UNIBA MADURA yang punya semangat juang dan ketertarikan di bidang bulu tangkis. Yuk, daftarkan dirimu sekarang! Bersama UKM Badminton, kita bukan hanya bermain, tapi juga tumbuh, berkompetisi, dan raih prestasi. Isi data dirimu dengan lengkap, karena langkah kecil ini adalah awal dari perjalanan besar menuju kemenangan! �</p>
+        <p class="coordinator">Koordinator: <strong>Moh Fahrur Rozi</strong></p>
+      </div>
+
+      <div class="account-notice">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>ojiromeo46@gmail.com</strong>
+          <span class="account-action">Ganti akun</span>
+        </div>
+      </div>
+
+      <div class="privacy-notice">
+        <i class="fas fa-shield-alt"></i>
+        <span>Nama, alamat email, dan foto yang terkait dengan Akun Google Anda akan direkam saat Anda mengupload file dan mengirimkan formulir ini</span>
+      </div>
+
+      <div class="required-notice">
+        <span class="required-star">*</span> Menunjukkan pertanyaan yang wajib diisi
+      </div>
+
+      <form id="registrationForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="nama">
+            NAMA
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" required>
+        </div>
+
+        <div class="form-group">
+          <label for="jurusan">
+            JURUSAN
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="jurusan" name="jurusan" placeholder="Masukkan jurusan Anda" required>
+        </div>
+
+        <div class="form-group">
+          <label for="angkatan">
+            ANGKATAN
+            <span class="required-star">*</span>
+          </label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="angkatan" value="2026" required>
+              <span class="radio-label">2026</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="angkatan" value="2025">
+              <span class="radio-label">2025</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="angkatan" value="2024">
+              <span class="radio-label">2024</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="angkatan" value="2023">
+              <span class="radio-label">2023</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="angkatan" value="2022">
+              <span class="radio-label">2022</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="no_hp">
+            No. HP
+            <span class="required-star">*</span>
+          </label>
+          <input type="tel" id="no_hp" name="no_hp" placeholder="Masukkan nomor WhatsApp aktif" required>
+        </div>
+
+        <div class="form-group">
+          <label for="alasan">
+            Alasan Bergabung dengan UKM Badminton?
+            <span class="required-star">*</span>
+          </label>
+          <textarea id="alasan" name="alasan" rows="4" placeholder="Tuliskan alasan Anda ingin bergabung..." required></textarea>
+        </div>
+
+        <div class="requirements-section">
+          <h3><i class="fas fa-clipboard-list"></i> Persyaratan Masuk UKM Badminton</h3>
+
+          <div class="requirement-item">
+            <div class="requirement-header">
+              <span class="requirement-number">1</span>
+              <div class="requirement-text">
+                <p><strong>Mahasiswa Aktif UNIBA MADURA</strong></p>
+                <p>Silahkan buka Siakad UNIBA di screenshot di halaman utama dan kirim di sini</p>
+              </div>
+            </div>
+            <div class="file-upload">
+              <input type="file" id="file_siakad" name="file_siakad" accept="image/*,.pdf" required>
+              <label for="file_siakad" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload File (Maks 100 MB)</span>
+              </label>
+              <div class="file-name" id="file_siakad_name">Tidak ada file dipilih</div>
+            </div>
+          </div>
+
+          <div class="requirement-item">
+            <div class="requirement-header">
+              <span class="requirement-number">2</span>
+              <div class="requirement-text">
+                <p><strong>Follow Akun TikTok UKM Badminton UNIBA MADURA</strong></p>
+                <p>
+                  <a href="https://www.tiktok.com/@badmintonuniba?_t=ZS-8z6UKCJSIKX&_r=1" target="_blank" class="link-tiktok">
+                    <i class="fab fa-tiktok"></i> @badmintonuniba
+                  </a>
+                </p>
+                <p>Silahkan di screenshot kirim di sini</p>
+              </div>
+            </div>
+            <div class="file-upload">
+              <input type="file" id="file_tiktok" name="file_tiktok" accept="image/*,.pdf" required>
+              <label for="file_tiktok" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload File (Maks 100 MB)</span>
+              </label>
+              <div class="file-name" id="file_tiktok_name">Tidak ada file dipilih</div>
+            </div>
+          </div>
+
+          <div class="requirement-item">
+            <div class="requirement-header">
+              <span class="requirement-number">3</span>
+              <div class="requirement-text">
+                <p><strong>Follow Akun IG UKM Badminton UNIBA MADURA</strong></p>
+                <p>
+                  <a href="https://www.instagram.com/badmintonuniba?igsh=MWI5dGxvaXN1bW10ag==" target="_blank" class="link-instagram">
+                    <i class="fab fa-instagram"></i> @badmintonuniba
+                  </a>
+                </p>
+                <p>Silahkan di screenshot dikirim di sini</p>
+              </div>
+            </div>
+            <div class="file-upload">
+              <input type="file" id="file_instagram" name="file_instagram" accept="image/*,.pdf" required>
+              <label for="file_instagram" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload File (Maks 100 MB)</span>
+              </label>
+              <div class="file-name" id="file_instagram_name">Tidak ada file dipilih</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-paper-plane"></i>
+          <span>Kirim Pendaftaran</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="footer">
+      <p>&copy; 2026 UKM Badminton UNIBA MADURA. All rights reserved.</p>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Mengirim data...</p>
+    </div>
+  </div>
+
+  <div class="success-modal-overlay" id="successModal">
+    <div class="success-modal">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2>Pendaftaran Berhasil!</h2>
+      <p>Terima kasih telah mendaftar menjadi calon anggota UKM Badminton UNIBA MADURA.</p>
+      <div class="wa-group-box">
+        <i class="fab fa-whatsapp"></i>
+        <div>
+          <p><strong>Yuk gabung ke grup WhatsApp kami!</strong></p>
+          <p>Setelah mendaftar, segera bergabung ke grup WhatsApp resmi UKM Badminton untuk mendapatkan informasi selanjutnya dan menunggu persetujuan dari admin.</p>
+        </div>
+      </div>
+      <a href="https://chat.whatsapp.com/J7YLpwGPiYo60341nxjZSU" target="_blank" class="wa-btn">
+        <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp
+      </a>
+      <p class="success-note">Tunggu persetujuan admin untuk konfirmasi pendaftaran kamu.</p>
+      <button class="close-modal-btn" id="closeModalBtn">Tutup</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
