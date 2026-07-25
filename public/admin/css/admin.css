@@ -200,6 +200,27 @@ body {
   gap: 6px;
 }
 
+.nav-icon-btn {
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-light);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-icon-btn:hover {
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
 .logout-btn {
   padding: 8px 20px;
   background: none;
@@ -493,4 +514,70 @@ tbody tr:last-child td {
   tbody td {
     padding: 10px 12px;
   }
+}
+
+/* Settings */
+.settings-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+
+.settings-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-info {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.settings-card .form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s;
+  background: var(--white);
+}
+
+.settings-card .form-group input:focus {
+  outline: none;
+  border-color: var(--primary-lighter);
+  box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+}
+
+.input-help {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.input-help a {
+  color: #1976d2;
+}
+
+.otp-section {
+  margin-top: 16px;
+  padding: 16px;
+  background: #E8F5E9;
+  border-radius: var(--radius-sm);
+  border: 1px solid #A5D6A7;
+}
+
+.settings-card .action-btn {
+  margin-top: 8px;
 }

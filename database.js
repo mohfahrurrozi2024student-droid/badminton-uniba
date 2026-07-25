@@ -41,7 +41,9 @@ async function initDatabase() {
     CREATE TABLE IF NOT EXISTS admin (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL
+      password TEXT NOT NULL,
+      email TEXT DEFAULT '',
+      gmail_app_password TEXT DEFAULT ''
     )
   `);
 

@@ -4,7 +4,10 @@ const API = {
   logout: '/api/admin/logout',
   data: '/api/admin/data',
   csv: '/api/admin/data/csv',
-  delete: '/api/admin/data/delete/'
+  delete: '/api/admin/data/delete/',
+  settings: '/api/admin/settings',
+  sendOtp: '/api/admin/send-otp',
+  changePassword: '/api/admin/change-password'
 };
 
 const toast = document.getElementById('toast');
@@ -77,6 +80,17 @@ document.getElementById('downloadCsvBtn').addEventListener('click', function() {
 });
 
 document.getElementById('refreshBtn').addEventListener('click', loadData);
+
+document.getElementById('settingsNavBtn').addEventListener('click', function() {
+  document.getElementById('dataPage').style.display = 'none';
+  document.getElementById('settingsPage').style.display = 'block';
+  loadSettings();
+});
+
+document.getElementById('backToDataBtn').addEventListener('click', function() {
+  document.getElementById('settingsPage').style.display = 'none';
+  document.getElementById('dataPage').style.display = 'block';
+});
 
 function showDashboard() {
   loginPage.style.display = 'none';
@@ -174,6 +188,118 @@ async function deleteData(id) {
     showToast('Gagal menghapus data', 'error');
   }
 }
+
+// Settings
+async function loadSettings() {
+  try {
+    const res = await fetch(API.settings);
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('adminEmail').value = data.email || '';
+    }
+  } catch (e) {}
+}
+
+document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
+  const email = document.getElementById('adminEmail').value.trim();
+  const gmail_app_password = document.getElementById('gmailAppPassword').value.trim();
+
+  if (!email) { showToast('Masukkan alamat Gmail', 'error'); return; }
+  if (!gmail_app_password) { showToast('Masukkan App Password Gmail', 'error'); return; }
+
+  try {
+    const res = await fetch(API.settings, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, gmail_app_password })
+    });
+    const result = await res.json();
+    if (result.success) {
+      showToast('Pengaturan disimpan', 'success');
+      document.getElementById('gmailAppPassword').value = '';
+    }
+  } catch (e) {
+    showToast('Gagal menyimpan', 'error');
+  }
+});
+
+document.getElementById('sendOtpBtn').addEventListener('click', async function() {
+  const current = document.getElementById('currentPassword').value;
+  const newPass = document.getElementById('newPassword').value;
+  const confirmPass = document.getElementById('confirmPassword').value;
+
+  if (!current || !newPass || !confirmPass) {
+    showToast('Isi semua field password', 'error'); return;
+  }
+  if (newPass.length < 6) {
+    showToast('Password baru minimal 6 karakter', 'error'); return;
+  }
+  if (newPass !== confirmPass) {
+    showToast('Password baru tidak cocok', 'error'); return;
+  }
+
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+
+  try {
+    const res = await fetch(API.sendOtp, { method: 'POST' });
+    const result = await res.json();
+
+    if (result.success) {
+      showToast('Kode OTP terkirim ke email admin', 'success');
+      document.getElementById('otpSection').style.display = 'block';
+      document.getElementById('sendOtpBtn').style.display = 'none';
+      document.getElementById('changePasswordBtn').style.display = 'inline-flex';
+    } else {
+      showToast(result.error, 'error');
+    }
+  } catch (e) {
+    showToast('Gagal kirim OTP', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim OTP';
+  }
+});
+
+document.getElementById('changePasswordBtn').addEventListener('click', async function() {
+  const current = document.getElementById('currentPassword').value;
+  const newPass = document.getElementById('newPassword').value;
+  const otp = document.getElementById('otpCode').value.trim();
+
+  if (!otp) { showToast('Masukkan kode OTP', 'error'); return; }
+
+  const btn = document.getElementById('changePasswordBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+  try {
+    const res = await fetch(API.changePassword, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current_password: current, new_password: newPass, otp })
+    });
+    const result = await res.json();
+
+    if (result.success) {
+      showToast('Password berhasil diganti!', 'success');
+      document.getElementById('currentPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+      document.getElementById('otpCode').value = '';
+      document.getElementById('otpSection').style.display = 'none';
+      document.getElementById('sendOtpBtn').style.display = 'inline-flex';
+      document.getElementById('changePasswordBtn').style.display = 'none';
+    } else {
+      showToast(result.error, 'error');
+    }
+  } catch (e) {
+    showToast('Gagal ganti password', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check"></i> Ganti Password';
+  }
+});
 
 function escapeHtml(text) {
   if (!text) return '-';

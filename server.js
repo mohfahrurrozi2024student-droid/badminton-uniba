@@ -6,6 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 const { initDatabase, saveDatabase, getDatabase } = require('./database');
 
 const app = express();
@@ -163,6 +164,88 @@ app.get('/api/admin/data/delete/:id', authenticateToken, (req, res) => {
   db.run("DELETE FROM registrations WHERE id = ?", [req.params.id]);
   saveDatabase();
   res.json({ success: true });
+});
+
+const otpStore = {};
+
+app.get('/api/admin/settings', authenticateToken, (req, res) => {
+  const db = getDatabase();
+  const stmt = db.prepare("SELECT username, email FROM admin WHERE username = ?");
+  stmt.bind([req.user.username]);
+  let row = null;
+  if (stmt.step()) row = stmt.getAsObject();
+  stmt.free();
+  res.json({ username: row.username, email: row.email || '' });
+});
+
+app.post('/api/admin/settings', authenticateToken, (req, res) => {
+  const { email, gmail_app_password } = req.body;
+  const db = getDatabase();
+  db.run("UPDATE admin SET email = ?, gmail_app_password = ? WHERE username = ?", [email, gmail_app_password, req.user.username]);
+  saveDatabase();
+  res.json({ success: true });
+});
+
+app.post('/api/admin/send-otp', authenticateToken, async (req, res) => {
+  const db = getDatabase();
+  const stmt = db.prepare("SELECT email, gmail_app_password FROM admin WHERE username = ?");
+  stmt.bind([req.user.username]);
+  let row = null;
+  if (stmt.step()) row = stmt.getAsObject();
+  stmt.free();
+
+  if (!row || !row.email || !row.gmail_app_password) {
+    return res.status(400).json({ error: 'Atur email Gmail dan App Password di Pengaturan dulu' });
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore[req.user.username] = { otp, expires: Date.now() + 300000 };
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: row.email, pass: row.gmail_app_password }
+    });
+    await transporter.sendMail({
+      from: row.email,
+      to: row.email,
+      subject: 'Kode OTP Ganti Password - Admin UKM Badminton',
+      html: `<h2>Kode OTP Anda</h2><p>Gunakan kode berikut untuk mengganti password:</p><h1 style="font-size:32px;letter-spacing:4px;background:#1B5E20;color:#fff;padding:16px 24px;display:inline-block;border-radius:8px">${otp}</h1><p>Kode berlaku 5 menit.</p>`
+    });
+    res.json({ success: true, message: 'Kode OTP terkirim ke email admin' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Gagal kirim email. Cek Gmail & App Password.' });
+  }
+});
+
+app.post('/api/admin/change-password', authenticateToken, (req, res) => {
+  const { current_password, new_password, otp } = req.body;
+  const db = getDatabase();
+
+  const stmt = db.prepare("SELECT * FROM admin WHERE username = ?");
+  stmt.bind([req.user.username]);
+  let row = null;
+  if (stmt.step()) row = stmt.getAsObject();
+  stmt.free();
+
+  if (!row || !bcrypt.compareSync(current_password, row.password)) {
+    return res.status(400).json({ error: 'Password saat ini salah' });
+  }
+
+  const stored = otpStore[req.user.username];
+  if (!stored || stored.otp !== otp) {
+    return res.status(400).json({ error: 'Kode OTP salah' });
+  }
+  if (Date.now() > stored.expires) {
+    return res.status(400).json({ error: 'Kode OTP sudah kadaluarsa' });
+  }
+
+  const hashedPassword = bcrypt.hashSync(new_password, 10);
+  db.run("UPDATE admin SET password = ? WHERE username = ?", [hashedPassword, req.user.username]);
+  saveDatabase();
+  delete otpStore[req.user.username];
+  res.json({ success: true, message: 'Password berhasil diganti' });
 });
 
 initDatabase().then(() => {
