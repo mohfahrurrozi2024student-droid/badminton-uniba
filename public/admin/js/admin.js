@@ -107,7 +107,7 @@ async function loadData() {
     if (data.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="12" class="empty-state">
+          <td colspan="14" class="empty-state">
             <i class="fas fa-inbox"></i>
             <p>Belum ada data pendaftar</p>
           </td>
@@ -121,6 +121,7 @@ async function loadData() {
         day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
       }) : '-';
 
+      const fotoLink = row.foto ? `<a href="${row.foto}" target="_blank" class="file-link"><i class="fas fa-image"></i> Lihat</a>` : '-';
       const siakadLink = row.file_siakad ? `<a href="${row.file_siakad}" target="_blank" class="file-link"><i class="fas fa-external-link-alt"></i> Lihat</a>` : '-';
       const tiktokLink = row.file_tiktok ? `<a href="${row.file_tiktok}" target="_blank" class="file-link"><i class="fas fa-external-link-alt"></i> Lihat</a>` : '-';
       const igLink = row.file_instagram ? `<a href="${row.file_instagram}" target="_blank" class="file-link"><i class="fas fa-external-link-alt"></i> Lihat</a>` : '-';
@@ -129,7 +130,9 @@ async function loadData() {
         <tr>
           <td>${index + 1}</td>
           <td><strong>${escapeHtml(row.nama)}</strong></td>
-          <td>${escapeHtml(row.email)}</td>
+          <td>${fotoLink}</td>
+          <td>${escapeHtml(row.username_tiktok)}</td>
+          <td>${escapeHtml(row.username_ig)}</td>
           <td>${escapeHtml(row.jurusan)}</td>
           <td>${escapeHtml(row.angkatan)}</td>
           <td>${escapeHtml(row.no_hp)}</td>

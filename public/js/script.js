@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const toast = document.getElementById('toast');
 
   const fileInputs = [
+    { id: 'foto', nameId: 'foto_name' },
     { id: 'file_siakad', nameId: 'file_siakad_name' },
     { id: 'file_tiktok', nameId: 'file_tiktok_name' },
     { id: 'file_instagram', nameId: 'file_instagram_name' }

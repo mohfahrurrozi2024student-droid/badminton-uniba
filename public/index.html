@@ -53,11 +53,34 @@
         </div>
 
         <div class="form-group">
-          <label for="email">
-            EMAIL
+          <label for="foto">
+            FOTO PRIBADI
             <span class="required-star">*</span>
           </label>
-          <input type="email" id="email" name="email" placeholder="Masukkan email aktif Anda" required>
+          <div class="file-upload">
+            <input type="file" id="foto" name="foto" accept="image/*" required>
+            <label for="foto" class="file-label">
+              <i class="fas fa-camera"></i>
+              <span>Upload Foto (Maks 100 MB)</span>
+            </label>
+            <div class="file-name" id="foto_name">Tidak ada file dipilih</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username_tiktok">
+            Username TikTok
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="username_tiktok" name="username_tiktok" placeholder="Contoh: @badmintonuniba" required>
+        </div>
+
+        <div class="form-group">
+          <label for="username_ig">
+            Username Instagram
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="username_ig" name="username_ig" placeholder="Contoh: @badmintonuniba" required>
         </div>
 
         <div class="form-group">

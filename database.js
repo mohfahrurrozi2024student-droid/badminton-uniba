@@ -23,7 +23,9 @@ async function initDatabase() {
     CREATE TABLE IF NOT EXISTS registrations (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nama TEXT NOT NULL,
-      email TEXT NOT NULL DEFAULT '',
+      foto TEXT,
+      username_tiktok TEXT NOT NULL DEFAULT '',
+      username_ig TEXT NOT NULL DEFAULT '',
       jurusan TEXT NOT NULL,
       angkatan TEXT NOT NULL,
       no_hp TEXT NOT NULL,

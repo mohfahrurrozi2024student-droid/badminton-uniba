@@ -55,22 +55,24 @@ function authenticateToken(req, res, next) {
 }
 
 app.post('/api/register', upload.fields([
+  { name: 'foto', maxCount: 1 },
   { name: 'file_siakad', maxCount: 1 },
   { name: 'file_tiktok', maxCount: 1 },
   { name: 'file_instagram', maxCount: 1 }
 ]), (req, res) => {
   try {
-    const { nama, email, jurusan, angkatan, no_hp, alasan } = req.body;
+    const { nama, username_tiktok, username_ig, jurusan, angkatan, no_hp, alasan } = req.body;
     const db = getDatabase();
 
+    const foto = req.files['foto'] ? '/uploads/' + req.files['foto'][0].filename : null;
     const file_siakad = req.files['file_siakad'] ? '/uploads/' + req.files['file_siakad'][0].filename : null;
     const file_tiktok = req.files['file_tiktok'] ? '/uploads/' + req.files['file_tiktok'][0].filename : null;
     const file_instagram = req.files['file_instagram'] ? '/uploads/' + req.files['file_instagram'][0].filename : null;
 
     db.run(
-      `INSERT INTO registrations (nama, email, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nama, email, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram]
+      `INSERT INTO registrations (nama, foto, username_tiktok, username_ig, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nama, foto, username_tiktok, username_ig, jurusan, angkatan, no_hp, alasan, file_siakad, file_tiktok, file_instagram]
     );
 
     saveDatabase();
@@ -120,7 +122,7 @@ app.get('/api/admin/data', authenticateToken, (req, res) => {
   const db = getDatabase();
   const result = db.exec("SELECT * FROM registrations ORDER BY created_at DESC");
 
-  const columns = ['id', 'nama', 'email', 'jurusan', 'angkatan', 'no_hp', 'alasan', 'file_siakad', 'file_tiktok', 'file_instagram', 'created_at'];
+  const columns = ['id', 'nama', 'foto', 'username_tiktok', 'username_ig', 'jurusan', 'angkatan', 'no_hp', 'alasan', 'file_siakad', 'file_tiktok', 'file_instagram', 'created_at'];
   const data = result.length > 0 ? result[0].values.map(row => {
     const obj = {};
     columns.forEach((col, i) => { obj[col] = row[i]; });
@@ -134,7 +136,7 @@ app.get('/api/admin/data/csv', authenticateToken, (req, res) => {
   const db = getDatabase();
   const result = db.exec("SELECT * FROM registrations ORDER BY created_at DESC");
 
-  const headers = ['ID', 'Nama', 'Email', 'Jurusan', 'Angkatan', 'No. HP', 'Alasan Bergabung', 'File Siakad', 'File TikTok', 'File Instagram', 'Tanggal Daftar'];
+  const headers = ['ID', 'Nama', 'Foto', 'Username TikTok', 'Username IG', 'Jurusan', 'Angkatan', 'No. HP', 'Alasan Bergabung', 'File Siakad', 'File TikTok', 'File Instagram', 'Tanggal Daftar'];
   let csv = headers.join(',') + '\n';
 
   if (result.length > 0) {
