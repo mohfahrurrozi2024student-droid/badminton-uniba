@@ -220,7 +220,7 @@ app.post('/api/admin/send-otp', authenticateToken, async (req, res) => {
 });
 
 app.post('/api/admin/change-password', authenticateToken, (req, res) => {
-  const { current_password, new_password, otp } = req.body;
+  const { current_password, new_password } = req.body;
   const db = getDatabase();
 
   const stmt = db.prepare("SELECT * FROM admin WHERE username = ?");
@@ -233,18 +233,9 @@ app.post('/api/admin/change-password', authenticateToken, (req, res) => {
     return res.status(400).json({ error: 'Password saat ini salah' });
   }
 
-  const stored = otpStore[req.user.username];
-  if (!stored || stored.otp !== otp) {
-    return res.status(400).json({ error: 'Kode OTP salah' });
-  }
-  if (Date.now() > stored.expires) {
-    return res.status(400).json({ error: 'Kode OTP sudah kadaluarsa' });
-  }
-
   const hashedPassword = bcrypt.hashSync(new_password, 10);
   db.run("UPDATE admin SET password = ? WHERE username = ?", [hashedPassword, req.user.username]);
   saveDatabase();
-  delete otpStore[req.user.username];
   res.json({ success: true, message: 'Password berhasil diganti' });
 });
 

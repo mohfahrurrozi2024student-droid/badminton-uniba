@@ -190,40 +190,10 @@ async function deleteData(id) {
 }
 
 // Settings
-async function loadSettings() {
-  try {
-    const res = await fetch(API.settings);
-    if (res.ok) {
-      const data = await res.json();
-      document.getElementById('adminEmail').value = data.email || '';
-    }
-  } catch (e) {}
+function loadSettings() {
 }
 
-document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
-  const email = document.getElementById('adminEmail').value.trim();
-  const gmail_app_password = document.getElementById('gmailAppPassword').value.trim();
-
-  if (!email) { showToast('Masukkan alamat Gmail', 'error'); return; }
-  if (!gmail_app_password) { showToast('Masukkan App Password Gmail', 'error'); return; }
-
-  try {
-    const res = await fetch(API.settings, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, gmail_app_password })
-    });
-    const result = await res.json();
-    if (result.success) {
-      showToast('Pengaturan disimpan', 'success');
-      document.getElementById('gmailAppPassword').value = '';
-    }
-  } catch (e) {
-    showToast('Gagal menyimpan', 'error');
-  }
-});
-
-document.getElementById('sendOtpBtn').addEventListener('click', async function() {
+document.getElementById('changePasswordBtn').addEventListener('click', async function() {
   const current = document.getElementById('currentPassword').value;
   const newPass = document.getElementById('newPassword').value;
   const confirmPass = document.getElementById('confirmPassword').value;
@@ -238,42 +208,6 @@ document.getElementById('sendOtpBtn').addEventListener('click', async function()
     showToast('Password baru tidak cocok', 'error'); return;
   }
 
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-
-    const res = await fetch(API.sendOtp, { method: 'POST', signal: controller.signal });
-    clearTimeout(timeout);
-    const result = await res.json();
-
-    if (result.success) {
-      showToast('Kode OTP terkirim ke email admin', 'success');
-      document.getElementById('otpSection').style.display = 'block';
-      document.getElementById('sendOtpBtn').style.display = 'none';
-      document.getElementById('changePasswordBtn').style.display = 'inline-flex';
-    } else {
-      showToast(result.error, 'error');
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim OTP';
-    }
-  } catch (e) {
-    showToast('Gagal kirim OTP. Cek koneksi dan pengaturan email.', 'error');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim OTP';
-  }
-});
-
-document.getElementById('changePasswordBtn').addEventListener('click', async function() {
-  const current = document.getElementById('currentPassword').value;
-  const newPass = document.getElementById('newPassword').value;
-  const otp = document.getElementById('otpCode').value.trim();
-
-  if (!otp) { showToast('Masukkan kode OTP', 'error'); return; }
-
   const btn = document.getElementById('changePasswordBtn');
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
@@ -282,7 +216,7 @@ document.getElementById('changePasswordBtn').addEventListener('click', async fun
     const res = await fetch(API.changePassword, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ current_password: current, new_password: newPass, otp })
+      body: JSON.stringify({ current_password: current, new_password: newPass })
     });
     const result = await res.json();
 
@@ -291,10 +225,6 @@ document.getElementById('changePasswordBtn').addEventListener('click', async fun
       document.getElementById('currentPassword').value = '';
       document.getElementById('newPassword').value = '';
       document.getElementById('confirmPassword').value = '';
-      document.getElementById('otpCode').value = '';
-      document.getElementById('otpSection').style.display = 'none';
-      document.getElementById('sendOtpBtn').style.display = 'inline-flex';
-      document.getElementById('changePasswordBtn').style.display = 'none';
     } else {
       showToast(result.error, 'error');
     }
